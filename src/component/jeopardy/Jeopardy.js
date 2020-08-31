@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 //import our service
 import JeopardyService from "../../jeopardyService";
+import Display from "../display/Display";
 
 class Jeopardy extends Component {
   //set our initial state and set up our service as this.client on this component
@@ -12,9 +13,6 @@ class Jeopardy extends Component {
       data: {},
       score: 0,
       value: "",
-      answersCount: 0,
-      result: "",
-      resetData: {},
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,48 +24,23 @@ class Jeopardy extends Component {
   }
 
   handleSubmit(event) {
-    alert("A answer was submitted: " + this.state.value);
+    // alert("A answer was submitted: " + this.state.value);
     event.preventDefault();
+
+    this.setState((currentState) => {
+      let score = currentState.score;
+      if (currentState.value === currentState.data.answer) {
+        //answered correctly
+        score += currentState.data.value;
+      } else {
+        //answered incorrectly
+        score -= currentState.data.value;
+      }
+      return { score, value: "" };
+    });
+    this.getNewQuestion();
   }
-  // handleInputChange(event) {
-  //   const target = event.target;
-  //   const value = (target.type === "answer") | target.checked | target.value;
-  //   const name = target.name;
 
-  //   this.setState({
-  //     [name]: value,
-  // });
-  //  }
-
-  answer = (user) => {
-    const player = `${user}PlayerScore`;
-    let score = this.state[player].score;
-
-    if (Math.random() > 0.5) {
-      score += 1;
-    }
-
-    this.setState((state, props) => ({
-      [player]: {
-        answer: state[player].score + 1,
-        score: score,
-      },
-    }));
-  };
-  // playAgain = () => {
-  //   this.getQuestions();
-  //   this.setState({ score: 0, responses: 0 });
-  // };
-  // computeAnswer = (answer, correctAnswer) => {
-  //   if (answer === correctAnswer) {
-  //     this.setState({
-  //       score: this.state.score + 1,
-  //     });
-  //   }
-  //   this.setState({
-  //     responses: this.state.responses < 5 ? this.state.responses + 1 : 5,
-  //   });
-  // };
   //get a new random question from the API and add it to the data object in state;
   getNewQuestion() {
     return this.client.getQuestion().then((result) => {
@@ -80,24 +53,8 @@ class Jeopardy extends Component {
   //when the component mounts, get a the first question
   componentDidMount() {
     // let data = this.context;
-    const { data } = this.props;
-    this.getNewQuestion(data);
-  }
-  shouldComponentUpdate() {
-    return this.newMethod();
-  }
-  newMethod() {
-    return true;
-  }
-
-  userAnswer(answer) {
-    this.setState((state) => ({
-      answersCount: {
-        ...state.answersCount,
-        [answer]: (state.answersCount[answer] || 0) + 1,
-      },
-      answer: answer,
-    }));
+    // const { data } = this.props;
+    this.getNewQuestion();
   }
 
   //display the results on the screen
@@ -107,6 +64,9 @@ class Jeopardy extends Component {
     if (this.state.data.catagory) {
       catagory = this.state.data.catagory.title;
     }
+    const DisplayComponent = (props) => (
+      <input onChange={props.handleChange} type="text" value={props.value} />
+    );
 
     return (
       <div>
@@ -119,14 +79,8 @@ class Jeopardy extends Component {
               onChange={this.handleChange}
             />
           </label>
-          <input type="submit" value="Submit" />
+          <button type="submit">Submit</button>
         </form>
-        <div className="user-input__answer">
-          <button
-            className="button"
-            onClick={this.setState.userAnswer}
-          ></button>
-        </div>
         <strong>User's Score:</strong>
         {this.state.score} <br />
         <strong>Question:</strong>

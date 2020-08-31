@@ -1,9 +1,16 @@
-import { Component } from "react";
-import Jeopardy from "..//jeopardy/Jeopardy";
+import React from "react";
 
-class Game extends Component {
+class Display extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
+  }
+  render() {
+    return (
+      <div>
+        <h1>My Display</h1>
+      </div>
+    );
   }
 }
-export default Game;
+export default Display;
