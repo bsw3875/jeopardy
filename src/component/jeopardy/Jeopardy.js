@@ -64,12 +64,10 @@ class Jeopardy extends Component {
     if (this.state.data.catagory) {
       catagory = this.state.data.catagory.title;
     }
-    const DisplayComponent = (props) => (
-      <input onChange={props.handleChange} type="text" value={props.value} />
-    );
 
     return (
-      <div>
+      <div className="Display">
+        <Display score={this.state.score} />
         <form onSubmit={this.handleSubmit}>
           <label>
             Answer:

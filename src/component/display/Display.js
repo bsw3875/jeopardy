@@ -8,7 +8,7 @@ class Display extends React.Component {
   render() {
     return (
       <div>
-        <h1>My Display</h1>
+        <h1> Display {this.props.score}</h1>
       </div>
     );
   }
