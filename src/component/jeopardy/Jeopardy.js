@@ -59,10 +59,16 @@ class Jeopardy extends Component {
 
   //display the results on the screen
   render() {
-    let catagory = "loading";
+    let display = "loading";
 
-    if (this.state.data.catagory) {
-      catagory = this.state.data.catagory.title;
+    if (this.state.score.display) {
+      display = this.state.score.display;
+
+      // let catagory = "loading";
+
+      // if (this.state.data.catagory) {
+      //   catagory = this.state.data.catagory.title;
+      // }
     }
 
     return (
@@ -85,8 +91,8 @@ class Jeopardy extends Component {
         {this.state.data.question} <br />
         <strong>Value:</strong>
         {this.state.data.value} <br />
-        <strong>Catagory:</strong>
-        {catagory}
+        {/* <strong>Catagory:</strong>
+        {catagory} */}
         <br />
       </div>
     );
